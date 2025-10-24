@@ -1,0 +1,282 @@
+/* Estilos personalizados para el sistema de recetas */
+:root {
+    --hospital-primary: #2c7db1;
+    --hospital-secondary: #63ace5;
+    --hospital-accent: #f8f9fa;
+    --hospital-dark: #1a4e72;
+    --footer-bg: #2c3e50;
+    --footer-text: #ecf0f1;
+}
+
+/* Estilo para botones personalizados */
+.btn-hospital {
+    background-color: var(--hospital-primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-hospital:hover {
+    background-color: var(--hospital-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-hospital:active {
+    transform: translateY(0);
+}
+
+.btn-outline-hospital {
+    background-color: transparent;
+    color: var(--hospital-primary);
+    border: 1px solid var(--hospital-primary);
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-hospital:hover {
+    background-color: var(--hospital-primary);
+    color: white;
+}
+
+/* Estilo para el encabezado de la tarjeta principal */
+.card-header {
+    background-color: var(--hospital-primary);
+    color: white;
+    font-weight: 600;
+    font-size: 1.2rem;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+
+/* Ajustes de espaciado */
+.card-body {
+    padding: 1.5rem;
+}
+.list-group-item.active{
+    background-color:lightblue;
+}
+.mt-4 {
+    margin-top: 2rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 2rem !important;
+}
+
+/* ESTILOS PARA EL FOOTER */
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 25px 0;
+    margin-top: 40px;
+    border-top: 4px solid var(--hospital-primary);
+}
+
+footer p {
+    margin-bottom: 8px;
+}
+
+footer p:last-child {
+    margin-bottom: 0;
+}
+
+footer strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Estilos responsivos adicionales */
+@media (max-width: 768px) {
+    footer {
+        padding: 20px 0;
+        margin-top: 30px;
+    }
+    
+    footer p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Efectos de transición suaves */
+.card, button, .alert {
+    transition: all 0.3s ease;
+}
+
+/* Estilos para la barra de navegación */
+.navbar-hospital {
+    background-color: var(--hospital-primary);
+}
+
+.navbar-hospital .navbar-brand,
+.navbar-hospital .nav-link {
+    color: white !important;
+}
+
+.navbar-hospital .nav-link:hover {
+    color: var(--hospital-accent) !important;
+}
+
+/* Estilos para las tarjetas de recetas */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(207, 55, 17, 0.075);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para la gestión de recetas */
+.prescription-card {
+    border-left: 4px solid var(--hospital-primary);
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.prescription-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(213, 13, 13, 0.1);
+}
+
+.prescription-card.expired {
+    border-left-color: #6c757d;
+    opacity: 0.7;
+}
+
+.prescription-card.urgent {
+    border-left-color: #dc3545;
+}
+
+.prescription-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.prescription-badge {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.medication-badge {
+    background-color: var(--hospital-secondary);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin: 2px;
+    display: inline-block;
+}
+
+/* Estilos para formularios de recetas */
+#prescriptionsList {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Estilos para items de medicamentos */
+.medication-item {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6 !important;
+}
+
+.medication-item:last-child {
+    margin-bottom: 0 !important;
+}
+
+.remove-medication {
+    margin-top: 5px;
+}
+
+/* Estilos para vista previa de receta */
+.prescription-preview {
+    background: rgb(255, 255, 255);
+    border: 2px solid #333;
+    padding: 30px;
+    font-family: 'Arial', sans-serif;
+}
+
+.prescription-header {
+    text-align: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.prescription-header h2 {
+    color: var(--hospital-primary);
+    margin: 0;
+}
+
+.prescription-header h4 {
+    color: #666;
+    margin: 5px 0;
+}
+
+.prescription-details {
+    margin-bottom: 20px;
+}
+
+.prescription-medications {
+    margin: 20px 0;
+}
+
+.medication-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.medication-name {
+    font-weight: bold;
+    flex: 2;
+}
+
+.medication-details {
+    flex: 3;
+    text-align: right;
+}
+
+.prescription-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #333;
+    text-align: center;
+}
+
+.doctor-signature {
+    margin-top: 50px;
+    border-top: 1px solid #333;
+    padding-top: 10px;
+    display: inline-block;
+    min-width: 200px;
+}
+
+/* Estilos para estados de recetas */
+.status-active {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-expired {
+    color: #6c757d;
+    font-weight: bold;
+}
+
+.status-pending {
+    color: #ffc107;
+    font-weight: bold;
+}

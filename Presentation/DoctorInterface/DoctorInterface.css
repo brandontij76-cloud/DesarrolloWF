@@ -1,0 +1,178 @@
+/* Estilos personalizados para el sistema médico */
+:root {
+    --hospital-primary: #2c7db1;
+    --hospital-secondary: #63ace5;
+    --hospital-accent: #f8f9fa;
+    --hospital-dark: #1a4e72;
+    --footer-bg: #2c3e50;
+    --footer-text: #ecf0f1;
+}
+
+/* Estilo para botones personalizados */
+.btn-hospital {
+    background-color: var(--hospital-primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-hospital:hover {
+    background-color: var(--hospital-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-hospital:active {
+    transform: translateY(0);
+}
+
+/* Estilo para las tarjetas de características */
+.card.text-center {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(44, 125, 177, 0.1);
+    border-radius: 10px;
+    height: 100%;
+}
+
+.card.text-center:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los iconos de características */
+.feature-icon {
+    font-size: 2.5rem;
+    color: var(--hospital-primary);
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Estilo para el encabezado de la tarjeta principal */
+.card-header {
+    background-color: var(--hospital-primary);
+    color: white;
+    font-weight: 600;
+    font-size: 1.2rem;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+/* Estilo para la alerta de bienvenida */
+.alert-info {
+    background-color: rgba(44, 125, 177, 0.1);
+    border-color: rgba(44, 125, 177, 0.2);
+    color: var(--hospital-dark);
+    border-radius: 8px;
+}
+
+/* Ajustes de espaciado */
+.card-body {
+    padding: 1.5rem;
+}
+
+.mt-4 {
+    margin-top: 2rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 2rem !important;
+}
+
+/* ESTILOS PARA EL FOOTER */
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 25px 0;
+    margin-top: 40px;
+    border-top: 4px solid var(--hospital-primary);
+}
+
+footer p {
+    margin-bottom: 8px;
+}
+
+footer p:last-child {
+    margin-bottom: 0;
+}
+
+footer strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Efecto de transición para el footer */
+footer {
+    transition: background-color 0.3s ease;
+}
+
+/* Estilos responsivos adicionales */
+@media (max-width: 768px) {
+    .feature-icon {
+        font-size: 2rem;
+    }
+    
+    .card.text-center {
+        margin-bottom: 1.5rem;
+    }
+    
+    footer {
+        padding: 20px 0;
+        margin-top: 30px;
+    }
+    
+    footer p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Efectos de transición suaves */
+.card, button, .alert {
+    transition: all 0.3s ease;
+}
+
+/* Estilos para la barra de navegación */
+.navbar-hospital {
+    background-color: var(--hospital-primary);
+}
+
+.navbar-hospital .navbar-brand,
+.navbar-hospital .nav-link {
+    color: white !important;
+}
+
+.navbar-hospital .nav-link:hover {
+    color: var(--hospital-accent) !important;
+}
+
+/* Estilos para botones de navegación de médico */
+.doctor-nav-btn.active {
+    background-color: var(--hospital-primary);
+    border-color: var(--hospital-primary);
+    color: white;
+}
+
+/* Estilos para las secciones de contenido */
+.doctor-content-section {
+    transition: opacity 0.3s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Estilos para las tarjetas de pacientes */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-footer {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+}

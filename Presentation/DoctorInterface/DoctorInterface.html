@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Gestión Médica - Hospital La Paz</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="DoctorInterface.css">
+
+<style>
+/*kpi-hide-titles*/
+.kpi-card .kpi-title,
+.kpi-card p.kpi-title,
+.kpi-card .card-text,
+.kpi-title { display:none !important; }
+</style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-hospital">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hospital me-2"></i>Hospital La Paz
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="navbar-text me-3">
+                        <i class="fas fa-user me-1"></i> <span id="user-display-name">Dr. Juan Pérez</span>
+                    </span>
+                    <button class="btn btn-outline-hospital" onclick="logout()">
+                        <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        <!-- Secciones para Doctores -->
+        <div id="doctor-section">
+            <!-- Dashboard Médico -->
+            <div id="doctor-dashboard" class="doctor-content-section">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-user-md me-2"></i>Panel de Control Médico
+                            </div>
+                            <div class="card-body">
+                                <!-- Estadísticas Rápidas -->
+                                <div class="row mb-4">
+                                    <div class="col-md-3 col-6">
+                                        <div class="card text-center bg-light">
+                                            <div class="card-body">
+                                                <i class="fas fa-users text-hospital fs-2 mb-2"></i>
+                                                <h4 id="total-patients">0</h4>
+                                                <p class="text-muted mb-0">Pacientes</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="card text-center bg-light">
+                                            <div class="card-body">
+                                                <i class="fas fa-calendar-check text-hospital fs-2 mb-2"></i>
+                                                <h4 id="total-appointments">0</h4>
+                                                <p class="text-muted mb-0">Citas Hoy</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="card text-center bg-light">
+                                            <div class="card-body">
+                                                <i class="fas fa-prescription text-hospital fs-2 mb-2"></i>
+                                                <h4 id="total-prescriptions">0</h4>
+                                                <p class="text-muted mb-0">Recetas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6">
+                                        <div class="card text-center bg-light">
+                                            <div class="card-body">
+                                                <i class="fas fa-bell text-hospital fs-2 mb-2"></i>
+                                                <h4 id="pending-tasks">0</h4>
+                                                <p class="text-muted mb-0">Pendientes</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <i class="fas fa-users feature-icon"></i>
+                                                <h5>Gestión de Pacientes</h5>
+                                                <p class="text-muted">Registrar, editar y gestionar información de pacientes</p>
+                                                
+                                                <a href="Pacientes/Pacientes.html" class="btn btn-hospital">Gestionar Pacientes</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <i class="fas fa-prescription feature-icon"></i>
+                                                <h5>Recetas Médicas & Diagnostico</h5>
+                                                <p class="text-muted">Crear y gestionar recetas médicas</p>
+                                               <a href="Recetas/Recetas.html" class="btn btn-hospital">Gestionar Recetas & Diagnostico</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-4">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <i class="fas fa-calendar-check feature-icon"></i>
+                                                <h5>Gestión de Citas</h5>
+                                                <p class="text-muted">Programar y administrar citas médicas</p>
+                                               <a href="Citas/Citas.html" class="btn btn-hospital">Gestionar Citas</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Próximas Citas -->
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <i class="fas fa-clock me-2"></i>Citas para Hoy
+                                                </div>
+                                                <button class="btn btn-sm btn-outline-hospital" onclick="refreshTodayAppointments()">
+                                                    <i class="fas fa-sync-alt"></i> Actualizar
+                                                </button>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="today-appointments-loading" class="text-center py-3">
+                                                    <div class="spinner-border text-hospital" role="status">
+                                                        <span class="visually-hidden">Cargando...</span>
+                                                    </div>
+                                                    <p class="mt-2">Cargando citas para hoy...</p>
+                                                </div>
+                                                <div class="list-group" id="today-appointments-list" style="display: none;">
+                                                    <!-- Las citas de hoy se cargarán aquí -->
+                                                </div>
+                                                <div id="today-appointments-empty" class="text-center py-4" style="display: none;">
+                                                    <i class="fas fa-calendar-times text-muted fs-1 mb-3"></i>
+                                                    <h5 class="text-muted">No hay citas programadas para hoy</h5>
+                                                    <p class="text-muted">Todas las citas de hoy han sido completadas o no hay citas agendadas.</p>
+                                                    <button class="btn btn-hospital" onclick="showDoctorSection('doctor-appointments')">
+                                                        <i class="fas fa-plus me-1"></i> Programar Nueva Cita
+                                                    </button>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p class="mb-0">Sistema de Gestión Médica - Hospital La Paz &copy; 2023</p>
+            <p class="mb-0">Para emergencias, llame al: <strong>123-456-7890</strong></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Archivos JavaScript separados -->
+    <script src="DoctorInterface.js"></script>
+</body>
+</html>

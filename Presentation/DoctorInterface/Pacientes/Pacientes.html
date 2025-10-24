@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pacientes - Hospital La Paz</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="Pacientes.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-hospital">
+        <div class="container">
+            <a class="navbar-brand" href="../DoctorInterface.html">
+                <i class="fas fa-hospital me-2"></i>Hospital La Paz
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="user-info me-3">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="user-details">
+                            <span class="user-name" id="user-display-name">Cargando...</span>
+                            <small class="user-role" id="user-role">Médico</small>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-hospital" onclick="logout()">
+                        <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        <!-- Gestión de Pacientes -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-users me-2"></i>Gestión de Pacientes
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h4>Registrar Nuevo Paciente</h4>
+                        <form id="patientForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="patientName" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="patientName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="patientLastname" class="form-label">Apellido</label>
+                                    <input type="text" class="form-control" id="patientLastname" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="patientAge" class="form-label">Edad</label>
+                                    <input type="number" class="form-control" id="patientAge" min="0" max="120" required>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="patientGender" class="form-label">Género</label>
+                                    <select class="form-select" id="patientGender" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="patientPhone" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="patientPhone">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="patientEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="patientEmail">
+                            </div>
+                            <div class="mb-3">
+                                <label for="patientAddress" class="form-label">Dirección</label>
+                                <textarea class="form-control" id="patientAddress" rows="2"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="patientConditions" class="form-label">Condiciones Médicas (separar por comas)</label>
+                                <textarea class="form-control" id="patientConditions" rows="3" placeholder="Ej: Hipertensión, Diabetes tipo 2"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="patientAllergies" class="form-label">Alergias</label>
+                                <textarea class="form-control" id="patientAllergies" rows="2" placeholder="Ej: Penicilina, Mariscos"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="patientMedications" class="form-label">Medicamentos Actuales</label>
+                                <textarea class="form-control" id="patientMedications" rows="2" placeholder="Ej: Lisinopril 10mg, Metformina 850mg"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-hospital" id="submitBtn">
+                                <i class="fas fa-save me-1"></i> Registrar Paciente
+                            </button>
+                            <button type="button" class="btn btn-warning" onclick="resetForm()" style="margin-left: 10px;">
+                                <i class="fas fa-times me-1"></i> Cancelar
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Lista de Pacientes</h4>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="searchPatient" placeholder="Buscar paciente...">
+                        </div>
+                        <div class="list-group" id="patientsList">
+                            <!-- Las tarjetas de pacientes se cargarán aquí -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detalles del Paciente -->
+                <div class="row mt-4 hidden" id="patientDetailsSection">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-user me-2"></i>Detalles del Paciente
+                                <button class="btn btn-sm btn-outline-hospital float-end" onclick="closePatientDetails()">
+                                    <i class="fas fa-times"></i> Cerrar
+                                </button>
+                            </div>
+                            <div class="card-body" id="patientDetailsContent">
+                                <!-- Los detalles del paciente se cargarán aquí -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p class="mb-0">Sistema de Gestión de Pacientes - Hospital La Paz &copy; 2023</p>
+            <p class="mb-0">Para emergencias, llame al: <strong>123-456-7890</strong></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Archivos JavaScript separados -->
+    <script src="Pacientes.js"></script>
+</body>
+</html>

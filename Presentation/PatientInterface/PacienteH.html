@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Portal del Paciente - Hospital La Paz</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="PacienteH.css">
+
+<style>
+/*patient-notifs*/
+.patient-toast{border-left:6px solid #0d6efd;background:#f8f9fa;padding:12px 14px;border-radius:8px;margin-bottom:10px}
+.patient-toast.warn{border-color:#ffc107}
+.patient-toast.danger{border-color:#dc3545}
+.patient-toast .small{opacity:.8}
+</style>
+
+<style>
+#patient-debug{position:fixed;bottom:10px;right:10px;z-index:9999;font-size:12px}
+#patient-debug .card{box-shadow:0 2px 8px rgba(0,0,0,.15)}
+</style>
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-hospital">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hospital me-2"></i>Hospital La Paz
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="showSection('resumen')">
+                            <i class="fas fa-home me-1"></i> Resumen
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('recetas')">
+                            <i class="fas fa-prescription me-1"></i> Recetas & Diagnostico
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('citas')">
+                            <i class="fas fa-calendar-check me-1"></i> Citas 
+                        </a>
+                    </li>
+                   
+                </ul>
+                <div class="d-flex align-items-center">
+                <div class="me-3 position-relative" id="notif-container">
+                    <button id="notifBell" class="btn btn-link position-relative text-decoration-none" aria-label="Notificaciones" title="Notificaciones">
+                        <i class="fas fa-bell fa-lg"></i>
+                        <span id="notifBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+                    </button>
+                    <!-- Dropdown Panel -->
+                    <div id="notifDropdown" class="card shadow-sm notif-dropdown d-none">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-bell me-2"></i>Notificaciones</span>
+                            <button id="notifMarkRead" class="btn btn-sm btn-outline-secondary">Marcar como leídas</button>
+                        </div>
+                        <div id="notifList" class="list-group list-group-flush small">
+                            <div class="p-3 text-muted">Sin notificaciones</div>
+                        </div>
+                    </div>
+                </div>
+
+                    <span class="navbar-text me-3">
+                        <i class="fas fa-user me-1"></i> <span id="user-display-name">Paciente</span>
+                    </span>
+                    <button class="btn btn-outline-hospital" onclick="logout()">
+                        <i class="fas fa-sign-out-alt me-1"></i> Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+        >
+        <!-- Sección de Resumen -->
+        <div class="section" id="resumen-section">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-home me-2"></i>Resumen General
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Información del Paciente</h5>
+                            <div id="patient-info">
+                                <p><strong>Nombre:</strong> <span id="patient-name">Cargando...</span></p>
+                                <p><strong>Edad:</strong> <span id="patient-age">Cargando...</span></p>
+                                <p><strong>Género:</strong> <span id="patient-gender">Cargando...</span></p>
+                                <p><strong>Teléfono:</strong> <span id="patient-phone">Cargando...</span></p>
+                                <p><strong>Email:</strong> <span id="patient-email">Cargando...</span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Próxima Cita</h5>
+                            <div id="next-appointment" class="text-center p-3 bg-light rounded">
+                                <p class="mb-1" id="next-appointment-date">No hay citas programadas</p>
+                                <small class="text-muted" id="next-appointment-doctor"></small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h5>Última Receta</h5>
+                            <div id="last-prescription" class="p-3 bg-light rounded">
+                                <p class="mb-1" id="last-prescription-date">No hay recetas recientes & Diagnostico</p>
+                                <small class="text-muted" id="last-prescription-doctor"></small>
+                            </div>
+                        </div>
+                        
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h5>Últimas Recetas</h5>
+        <div id="mini-prescriptions">
+            <p class="text-muted">Cargando...</p>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h5>Próximas Citas</h5>
+        <div id="mini-appointments">
+            <p class="text-muted">Cargando...</p>
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Recetas & Diagnostico-->
+        <div class="section" id="recetas-section" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-prescription me-2"></i>Mis Recetas Médicas
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="search-prescriptions" placeholder="Buscar en recetas...">
+                    </div>
+                    <div id="prescriptions-list">
+                        <p class="text-center text-muted">Cargando recetas...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Citas -->
+        <div class="section" id="citas-section" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-calendar-check me-2"></i>Mis Citas Médicas
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="search-appointments" placeholder="Buscar en citas...">
+                    </div>
+                    <div id="appointments-list">
+                        <p class="text-center text-muted">Cargando citas...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    
+    <!-- Footer -->
+    <footer class="text-center mt-5">
+        <div class="container">
+            <p class="mb-0">Portal del Paciente - Hospital La Paz &copy; 2023</p>
+            <p class="mb-0">Para emergencias, llame al: <strong>123-456-7890</strong></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Archivos JavaScript separados -->
+    <script src="PacienteH.js"></script>
+
+<div id="patient-debug" style="display:none">
+  <div class="card p-2">
+    <div><strong>Paciente:</strong> <span id="dbgName">-</span></div>
+    <div><strong>Recetas:</strong> <span id="dbgRx">0</span></div>
+    <div><strong>Citas:</strong> <span id="dbgAp">0</span></div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendario con Notas (HTML + CSS + JS)</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #121923;
+      --muted: #7b8a9b;
+      --text: #e8f0f7;
+      --accent: #4da3ff;
+      --accent-2: #7cf6d6;
+      --danger: #ff6b6b;
+      --ok: #36d399;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 10% -10%, #0f1622, transparent),
+                  radial-gradient(1000px 600px at 110% 10%, #0f1b2a, transparent),
+                  var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: min(1100px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px clamp(16px, 3vw, 28px);
+      background: #0f1520aa;
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .toolbar-left, .toolbar-right { display: flex; align-items: center; gap: 10px; }
+
+    .heading {
+      font-weight: 700;
+      font-size: clamp(18px, 2.6vw, 28px);
+      letter-spacing: .3px;
+      display: flex; align-items: baseline; gap: 12px;
+    }
+    .subtle { color: var(--muted); font-weight: 500; font-size: .9em; }
+
+    button.icon {
+      appearance: none; border: 0; cursor: pointer;
+      width: 40px; height: 40px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: #0c131d; color: var(--text);
+      border: 1px solid rgba(255,255,255,.07);
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+    }
+    button.icon:hover { background: #0f1826; }
+    button.icon:active { transform: translateY(1px) scale(.99); }
+
+    .pill {
+      border: 1px solid rgba(255,255,255,.08);
+      background: #0e1724;
+      padding: 8px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 14px;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .pill b { color: var(--text); font-weight: 600; }
+
+    .grid {
+      padding: 8px clamp(12px, 2.8vw, 26px) 26px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 10px;
+    }
+
+    .weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      padding: 8px 4px 2px;
+      color: var(--muted);
+      font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .12em;
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      min-height: 420px;
+    }
+
+    .day {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 14px;
+      padding: 10px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100px;
+      position: relative;
+      transition: border-color .2s ease, background .2s ease, transform .06s ease;
+    }
+    .day:hover { border-color: rgba(255,255,255,.16); background: #141e2b; }
+    .day.faded { opacity: .45; }
+
+    .day .topline { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .day .num {
+      width: 28px; height: 28px; display: grid; place-items: center; border-radius: 9px;
+      font-weight: 700; font-size: 13px; color: var(--text);
+    }
+    .day.today .num { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #0b0f14; }
+
+    .note-dot {
+      width: 8px; height: 8px; border-radius: 999px; background: var(--accent);
+      box-shadow: 0 0 0 2px rgba(77,163,255,.15);
+    }
+
+    .note-preview {
+      margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .add-btn {
+      margin-top: 8px;
+      justify-self: end;
+      font-size: 12px; padding: 6px 10px; border-radius: 10px;
+      border: 1px dashed rgba(255,255,255,.12);
+      background: transparent; color: var(--text);
+      cursor: pointer;
+    }
+    .add-btn:hover { border-style: solid; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.6);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px; z-index: 999;
+    }
+    .modal-backdrop.show { display: flex; }
+
+    .modal {
+      width: min(640px, 100%);
+      background: #111a27;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px; box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid; grid-template-rows: auto 1fr auto;
+    }
+    .modal header, .modal footer { padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .modal header { border-bottom: 1px solid rgba(255,255,255,.06); }
+    .modal footer { border-top: 1px solid rgba(255,255,255,.06); }
+    .modal h3 { margin: 0; font-size: 18px; }
+
+    textarea {
+      background: #0b1220; color: var(--text);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px; width: calc(100% - 20px); margin: 10px; padding: 12px;
+      min-height: 180px; resize: vertical; font-family: inherit; font-size: 14px; line-height: 1.5;
+    }
+
+    .btn {
+      appearance: none; border: 0; cursor: pointer; border-radius: 10px; padding: 10px 14px; font-weight: 600;
+      background: #101826; color: var(--text); border: 1px solid rgba(255,255,255,.08);
+      transition: transform .06s ease, filter .15s ease; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #0b0f14; border: none; }
+    .btn.ghost { background: transparent; }
+    .btn.danger { background: #2a1216; color: #ffd6d6; border-color: rgba(255,0,0,.18); }
+
+    .footer-actions { display: flex; align-items: center; gap: 10px; }
+
+    .legend { display: flex; align-items: center; gap: 12px; }
+    .dot { width: 10px; height: 10px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 2px rgba(77,163,255,.15); }
+
+    .searchbar {
+      display: flex; align-items: center; gap: 10px;
+      background: #0d1522; border: 1px solid rgba(255,255,255,.08);
+      padding: 8px 12px; border-radius: 12px;
+    }
+    .searchbar input {
+      background: transparent; border: 0; outline: none; color: var(--text); width: 220px;
+    }
+
+    @media (max-width: 720px) {
+      .weekdays { font-size: 11px; }
+      .days { gap: 6px; }
+      .day { padding: 8px; }
+      .toolbar { flex-wrap: wrap; gap: 12px; }
+      .searchbar input { width: 120px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app">
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <button class="icon" id="prevBtn" title="Mes anterior" aria-label="Mes anterior">&#x276E;</button>
+        <button class="icon" id="todayBtn" title="Ir a hoy" aria-label="Ir a hoy">Hoy</button>
+        <button class="icon" id="nextBtn" title="Mes siguiente" aria-label="Mes siguiente">&#x276F;</button>
+      </div>
+      <div class="heading">
+        <span id="monthLabel">Marzo</span>
+        <span class="subtle" id="yearLabel">2025</span>
+      </div>
+      <div class="toolbar-right">
+        <span class="pill legend"><span class="dot"></span> <span>Con nota</span></span>
+        <label class="searchbar" title="Buscar en notas (en todos los meses)">
+          🔎
+          <input id="searchInput" placeholder="Buscar notas..." />
+        </label>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="weekdays" id="weekdays"></div>
+      <div class="days" id="days"></div>
+    </div>
+  </div>
+
+  <!-- Modal para notas -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <header>
+        <h3 id="modalTitle">Nota para <span id="modalDate"></span></h3>
+        <button class="btn ghost" id="closeModal">✕</button>
+      </header>
+      <textarea id="noteText" placeholder="Escribe tu nota aquí..."></textarea>
+      <footer>
+        <div class="footer-actions">
+          <button class="btn danger" id="deleteNote">Eliminar</button>
+        </div>
+        <div class="footer-actions">
+          <button class="btn" id="copyNote">Copiar</button>
+          <button class="btn primary" id="saveNote">Guardar</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // --- Utilidades de fecha ---
+    const locale = 'es-ES';
+    const startWeekOnMonday = true; // Lunes como primer día
+
+    const pad2 = n => String(n).padStart(2, '0');
+    const ymd = d => `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+
+    function monthMatrix(year, month) {
+      // Crea una matriz plana de 42 celdas (6 semanas * 7 días) con objetos {date, inMonth}
+      const first = new Date(year, month, 1);
+      const last = new Date(year, month + 1, 0);
+      const firstWeekday = (first.getDay() + (startWeekOnMonday ? 6 : 0)) % 7; // 0..6
+      const daysInMonth = last.getDate();
+
+      // Días previos del mes anterior
+      const prevDays = firstWeekday;
+      const totalCells = 42;
+      const out = [];
+      for (let i = 0; i < totalCells; i++) {
+        const dayNum = i - prevDays + 1;
+        const cellDate = new Date(year, month, dayNum);
+        out.push({
+          date: cellDate,
+          inMonth: cellDate.getMonth() === month
+        });
+      }
+      return out;
+    }
+
+    // --- Almacenamiento ---
+    const STORE_KEY = 'calendarNotes-v1';
+    const loadStore = () => JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+    const saveStore = (data) => localStorage.setItem(STORE_KEY, JSON.stringify(data));
+
+    // --- Estado ---
+    const state = {
+      today: new Date(),
+      viewYear: new Date().getFullYear(),
+      viewMonth: new Date().getMonth(), // 0..11
+      notes: loadStore(),
+      search: ''
+    };
+
+    // --- Render ---
+    const elWeekdays = document.getElementById('weekdays');
+    const elDays = document.getElementById('days');
+    const elMonthLabel = document.getElementById('monthLabel');
+    const elYearLabel = document.getElementById('yearLabel');
+
+    function renderWeekdays() {
+      const base = [];
+      const fmt = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+      // Construimos 7 días a partir de un lunes
+      const start = startWeekOnMonday ? 1 : 0; // 1=Lunes, 0=Domingo
+      for (let i = 0; i < 7; i++) {
+        const temp = new Date(2025, 0, 5 + ((start + i) % 7)); // 2025-01-05 es domingo
+        base.push(fmt.format(temp).replace('.', ''));
+      }
+      elWeekdays.innerHTML = base.map(w => `<div>${w}</div>`).join('');
+    }
+
+    function render() {
+      const { viewYear, viewMonth, today, notes, search } = state;
+
+      // Encabezado
+      const monthName = new Intl.DateTimeFormat(locale, { month: 'long' }).format(new Date(viewYear, viewMonth, 1));
+      elMonthLabel.textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+      elYearLabel.textContent = viewYear;
+
+      // Celdas
+      const cells = monthMatrix(viewYear, viewMonth);
+      const todayStr = ymd(today);
+
+      elDays.innerHTML = cells.map(({date, inMonth}) => {
+        const key = ymd(date);
+        const note = notes[key] || '';
+        const hasNote = note.trim().length > 0;
+        const matchesSearch = search ? note.toLowerCase().includes(search.toLowerCase()) : true;
+
+        const classes = ['day'];
+        if (!inMonth) classes.push('faded');
+        if (key === todayStr) classes.push('today');
+        if (search && !matchesSearch) classes.push('dim');
+
+        const preview = hasNote ? `<div class="note-preview" title="${note.replace(/"/g,'&quot;')}">${note}</div>` : '';
+        const dot = hasNote ? '<span class="note-dot" title="Tiene nota"></span>' : '<span></span>';
+
+        return `
+          <div class="${classes.join(' ')}" data-date="${key}">
+            <div class="topline">
+              <div class="num">${date.getDate()}</div>
+              ${dot}
+            </div>
+            ${preview}
+            <button class="add-btn" data-date="${key}">${hasNote ? 'Editar nota' : 'Agregar nota'}</button>
+          </div>
+        `;
+      }).join('');
+
+      // Bind botones de cada día
+      elDays.querySelectorAll('.add-btn, .day .num, .day .note-preview').forEach(el => {
+        el.addEventListener('click', (e) => {
+          const key = e.currentTarget.getAttribute('data-date') || e.currentTarget.closest('.day').getAttribute('data-date');
+          openModalForDate(key);
+        });
+      });
+    }
+
+    // --- Modal ---
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const noteText = document.getElementById('noteText');
+    const modalDate = document.getElementById('modalDate');
+
+    let currentDateKey = null;
+
+    function openModalForDate(key) {
+      currentDateKey = key;
+      const d = new Date(key);
+      const fmt = new Intl.DateTimeFormat(locale, { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+      modalDate.textContent = fmt.format(d);
+      noteText.value = state.notes[key] || '';
+      modalBackdrop.classList.add('show');
+      noteText.focus();
+    }
+
+    function closeModal() {
+      modalBackdrop.classList.remove('show');
+      currentDateKey = null;
+      noteText.value = '';
+    }
+
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) closeModal();
+    });
+
+    document.getElementById('saveNote').addEventListener('click', () => {
+      if (!currentDateKey) return;
+      const value = noteText.value.trim();
+      if (value) {
+        state.notes[currentDateKey] = value;
+      } else {
+        delete state.notes[currentDateKey];
+      }
+      saveStore(state.notes);
+      render();
+      closeModal();
+    });
+
+    document.getElementById('deleteNote').addEventListener('click', () => {
+      if (!currentDateKey) return;
+      if (state.notes[currentDateKey]) {
+        delete state.notes[currentDateKey];
+        saveStore(state.notes);
+        render();
+      }
+      closeModal();
+    });
+
+    document.getElementById('copyNote').addEventListener('click', async () => {
+      if (!currentDateKey) return;
+      try {
+        await navigator.clipboard.writeText(noteText.value || '');
+        const btn = document.getElementById('copyNote');
+        const prev = btn.textContent;
+        btn.textContent = '¡Copiado!';
+        setTimeout(() => (btn.textContent = prev), 1200);
+      } catch {}
+    });
+
+    // --- Navegación ---
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      const { viewMonth, viewYear } = state;
+      const m = viewMonth - 1;
+      state.viewMonth = (m + 12) % 12;
+      state.viewYear = viewYear + (m < 0 ? -1 : 0);
+      render();
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      const { viewMonth, viewYear } = state;
+      const m = viewMonth + 1;
+      state.viewMonth = m % 12;
+      state.viewYear = viewYear + (m > 11 ? 1 : 0);
+      render();
+    });
+    document.getElementById('todayBtn').addEventListener('click', () => {
+      const t = new Date();
+      state.viewYear = t.getFullYear();
+      state.viewMonth = t.getMonth();
+      render();
+    });
+
+    // --- Búsqueda global de notas ---
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+      state.search = searchInput.value;
+      render();
+    });
+
+    // --- Inicialización ---
+    renderWeekdays();
+    render();
+
+    // Accesos rápidos
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+      if (e.key === 'ArrowLeft' && !modalBackdrop.classList.contains('show')) document.getElementById('prevBtn').click();
+      if (e.key === 'ArrowRight' && !modalBackdrop.classList.contains('show')) document.getElementById('nextBtn').click();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+/* Estilos personalizados para el sistema de pacientes */
+:root {
+    --hospital-primary: #2c7db1;
+    --hospital-secondary: #63ace5;
+    --hospital-accent: #f8f9fa;
+    --hospital-dark: #1a4e72;
+    --footer-bg: #2c3e50;
+    --footer-text: #ecf0f1;
+}
+
+/* Estilo para botones personalizados */
+.btn-hospital {
+    background-color: var(--hospital-primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-hospital:hover {
+    background-color: var(--hospital-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-hospital:active {
+    transform: translateY(0);
+}
+
+.btn-outline-hospital {
+    background-color: transparent;
+    color: var(--hospital-primary);
+    border: 1px solid var(--hospital-primary);
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-hospital:hover {
+    background-color: var(--hospital-primary);
+    color: white;
+}
+
+/* Estilo para el encabezado de la tarjeta principal */
+.card-header {
+    background-color: var(--hospital-primary);
+    color: white;
+    font-weight: 600;
+    font-size: 1.2rem;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+/* Estilo para la alerta de bienvenida */
+.alert-hospital {
+    background-color: rgba(44, 125, 177, 0.1);
+    border-color: rgba(44, 125, 177, 0.2);
+    color: var(--hospital-dark);
+    border-radius: 8px;
+    border-left: 4px solid var(--hospital-primary);
+}
+
+/* Ajustes de espaciado */
+.card-body {
+    padding: 1.5rem;
+}
+
+.mt-4 {
+    margin-top: 2rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 2rem !important;
+}
+
+/* ESTILOS PARA EL FOOTER */
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 25px 0;
+    margin-top: 40px;
+    border-top: 4px solid var(--hospital-primary);
+}
+
+footer p {
+    margin-bottom: 8px;
+}
+
+footer p:last-child {
+    margin-bottom: 0;
+}
+
+footer strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Estilos responsivos adicionales */
+@media (max-width: 768px) {
+    footer {
+        padding: 20px 0;
+        margin-top: 30px;
+    }
+    
+    footer p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Efectos de transición suaves */
+.card, button, .alert {
+    transition: all 0.3s ease;
+}
+
+/* Estilos para la barra de navegación */
+.navbar-hospital {
+    background-color: var(--hospital-primary);
+}
+
+.navbar-hospital .navbar-brand,
+.navbar-hospital .nav-link {
+    color: white !important;
+}
+
+.navbar-hospital .nav-link:hover {
+    color: var(--hospital-accent) !important;
+}
+
+/* Estilos para las tarjetas de pacientes */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-footer {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Estilos para la gestión de pacientes */
+.patient-card {
+    border-left: 4px solid var(--hospital-primary);
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.patient-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.patient-card.urgent {
+    border-left-color: #dc3545;
+}
+
+.patient-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.patient-badge {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.condition-badge {
+    background-color: var(--hospital-secondary);
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin: 2px;
+    display: inline-block;
+}
+
+/* Estilos para formularios de pacientes */
+#patientsList {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Estilos para detalles del paciente */
+.patient-detail-item {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.patient-detail-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.medical-history-item {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--hospital-primary);
+}
+
+
+/*CARDS LISTA PACIENTES*/
+.borderTabla{
+    border-right: solid 1px red;
+    width: 88px;
+}
+
+.patientElement{
+    background-color: #ffffff;
+    border-left: solid 5px #00d9ff;
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    border-bottom: solid 1px black;
+    border-top: solid 0.5px #82ecff;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.targetPatient{
+    margin-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.styleTargeAge{
+    float: right;
+    margin: 10px;
+}
+
+.box{
+    display: inline-block;
+}
+
+.boxModal{
+    background-color: #00d9ff;
+    width: 300px;
+    height: 400px;
+}
+
+.btnClose{
+    width: 100px;
+    height: 50px;
+    margin-top: 330px;
+    float: right;
+}
+
+/****BTN ACTUALIZAR***/
+#btnUpdatePatient{
+    width: 178px;
+    height: 40px;
+    color: #ffffff;
+    background-color: rgb(0, 195, 255);
+    border-radius: 5px;
+    border: none;
+    display: inline-block;
+    position: absolute;
+    opacity: 0.8;
+    z-index: 1;
+}
+
+#btnUpdatePatientdiv{
+    width: 178px;
+    height: 40px;
+    color: #ffffff;
+    background-color: rgb(0, 195, 255);
+    border-radius: 5px;
+    border: none;
+    display: inline-block;
+    position: absolute;
+    opacity: 0.8;
+    z-index: 1;
+}
+#message{
+    float: right;
+}
+
+/* Estilos para la información del usuario */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+    line-height: 1.2;
+}
+
+.user-role {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.2;
+}
+
+/* Efecto hover */
+.user-info:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+    .user-details {
+        display: none;
+    }
+    
+    .user-info {
+        padding: 8px;
+    }
+}

@@ -1,0 +1,164 @@
+/* Estilos personalizados para el Portal del Paciente */
+.navbar-hospital {
+    background-color: #2c7db1;
+}
+
+.navbar-hospital .navbar-brand,
+.navbar-hospital .nav-link {
+    color: white !important;
+}
+
+.navbar-hospital .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.alert-hospital {
+    background-color: #e3f2fd;
+    border-color: #2c7db1;
+    color: #2c7db1;
+}
+
+.btn-hospital {
+    background-color: #2c7db1;
+    border-color: #2c7db1;
+    color: white;
+}
+
+.btn-hospital:hover {
+    background-color: #1e5a7e;
+    border-color: #1e5a7e;
+    color: white;
+}
+
+.btn-outline-hospital {
+    color: #2c7db1;
+    border-color: #2c7db1;
+}
+
+.btn-outline-hospital:hover {
+    background-color: #2c7db1;
+    color: white;
+}
+
+/* Tarjetas de resumen */
+.summary-card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.summary-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Secciones */
+.section {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Tarjetas de información del paciente */
+.patient-info-card {
+    border-left: 4px solid #2c7db1;
+}
+
+/* Tarjetas de listas - SOLO LECTURA */
+.prescription-card, .appointment-card, .diagnosis-card {
+    border-left: 4px solid #2c7db1;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+}
+
+.prescription-card.expired {
+    border-left-color: #dc3545;
+    background-color: #f8f9fa;
+}
+
+.prescription-card.active {
+    border-left-color: #28a745;
+}
+
+.appointment-card.past {
+    border-left-color: #6c757d;
+    background-color: #f8f9fa;
+}
+
+.appointment-card.upcoming {
+    border-left-color: #ffc107;
+}
+
+.appointment-card.today {
+    border-left-color: #28a745;
+    background-color: #d4edda;
+}
+
+/* Badges */
+.status-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Botones de acción SOLO LECTURA */
+.btn-action {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* Mejoras visuales para solo lectura */
+.read-only-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.read-only-card .btn {
+    display: none; /* Ocultar botones en vista de paciente */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .summary-card .card-body {
+        padding: 1rem;
+    }
+    
+    .summary-card h5 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Estilos para impresión */
+@media print {
+    .navbar, .footer, .btn, .alert {
+        display: none !important;
+    }
+    
+    .prescription-card {
+        border: 1px solid #000 !important;
+        page-break-inside: avoid;
+    }
+}
+
+
+/* === Notificaciones (campanita) === */
+.notif-dropdown{
+  position:absolute;
+  right:0;
+  top:42px;
+  width: 360px;
+  max-height: 420px;
+  overflow-y: auto;
+  z-index: 1050;
+}
+.notif-item .badge{
+  min-width: 60px;
+  text-align:center;
+}
+@media (max-width: 576px){
+  .notif-dropdown{ width: 92vw; right: -8vw; }
+}
