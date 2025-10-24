@@ -1,0 +1,77 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-container {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.login-container input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.ingresar {
+  background: #007BFF;
+  border: none;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ingresar:hover {
+  background: #0056b3;
+}
+.registrar {
+  background: #04ff00af;
+  border: none;
+  color: white;
+  padding: 10px;
+  width: 60%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.registrar:hover {
+  background: #18b300;
+}
+
+
+#message {
+  margin-top: 15px;
+  font-weight: bold;
+}
+.navbar-hospital {
+  background-color: #007bff; /* azul principal */
+}
+
+.navbar-hospital .navbar-brand {
+  color: white !important; /* texto blanco */
+  font-weight: 600;
+}
+
+.navbar-hospital .navbar-brand i {
+  color: white !important; /* ícono blanco */
+}
+
+.pie {
+  position: fixed;
+  bottom: 0;
+  color:black;
+  text-align: center;
+  width: 100%;
+}
+
